@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'list_page.dart';
+import 'modules/list/presenter/list_page.dart';
 
 void main() {
   runApp(const MyApp());
