@@ -16,48 +16,61 @@ class _ListPageState extends ListViewMixin {
       body: Stack(
         alignment: AlignmentDirectional.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              names.isEmpty
-                  ? SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: const Center(
-                        child: Text(
-                          'Write name for save:',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    )
-                  : Expanded(
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: names.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            height: 50,
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: names[index].length > 2
-                                        ? Text(names[index].substring(0, 2))
-                                        : Text(names[index].substring(0, 1)),
-                                  ),
-                                ),
-                                Center(child: Text(names[index])),
-                              ],
+          ListenableBuilder(
+            listenable: controller,
+            builder: (context, child) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  controller.names.isEmpty
+                      ? SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: const Center(
+                            child: Text(
+                              'Write name for save:',
+                              style: TextStyle(fontSize: 16),
                             ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) => const Divider(),
-                      ),
-                    ),
-            ],
+                          ),
+                        )
+                      : Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: controller.names.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                height: 50,
+                                color: Theme.of(context).colorScheme.inversePrimary,
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                        vertical: 10,
+                                      ),
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        child: controller.names[index].length > 2
+                                            ? Text(controller.names[index].substring(0, 2))
+                                            : Text(controller.names[index].substring(0, 1)),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        controller.names[index],
+                                        style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            separatorBuilder: (BuildContext context, int index) => const Divider(),
+                          ),
+                        ),
+                ],
+              );
+            },
           ),
           Positioned(
             bottom: 0,
@@ -86,6 +99,7 @@ class _ListPageState extends ListViewMixin {
                       onPressed: () {
                         if (controllerName.text.isNotEmpty) {
                           controller.incrementNames(controllerName.text);
+                          controllerName.text = '';
                         }
                       },
                       child: const Center(child: Icon(Icons.add, color: Colors.amber)),

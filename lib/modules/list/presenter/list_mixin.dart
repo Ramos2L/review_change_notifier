@@ -8,21 +8,11 @@ abstract class ListViewMixin extends State<ListPage> {
 
   TextEditingController controllerName = TextEditingController();
 
-  List<String> get names => controller.names;
-
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(() {
-      controllerName.text = '';
-      setState(() {});
-    });
-  }
-
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    controller.dispose();
     controllerName.dispose();
   }
 }
