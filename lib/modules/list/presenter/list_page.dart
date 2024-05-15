@@ -38,30 +38,41 @@ class _ListPageState extends ListViewMixin {
                             padding: const EdgeInsets.all(8),
                             itemCount: controller.names.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return Container(
-                                height: 50,
-                                color: Theme.of(context).colorScheme.inversePrimary,
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 5,
-                                        vertical: 10,
+                              return Dismissible(
+                                key: Key(controller.names[index]),
+                                direction: DismissDirection.endToStart,
+                                onDismissed: (direction) => controller.names.removeAt(index),
+                                background: Container(
+                                  color: Colors.redAccent,
+                                  alignment: Alignment.centerRight,
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: const Icon(Icons.delete, color: Colors.white),
+                                ),
+                                child: Container(
+                                  height: 50,
+                                  color: Theme.of(context).colorScheme.inversePrimary,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 5,
+                                          vertical: 10,
+                                        ),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          child: controller.names[index].length > 2
+                                              ? Text(controller.names[index].substring(0, 2))
+                                              : Text(controller.names[index].substring(0, 1)),
+                                        ),
                                       ),
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: controller.names[index].length > 2
-                                            ? Text(controller.names[index].substring(0, 2))
-                                            : Text(controller.names[index].substring(0, 1)),
+                                      Expanded(
+                                        child: Text(
+                                          controller.names[index],
+                                          style: const TextStyle(overflow: TextOverflow.ellipsis),
+                                        ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        controller.names[index],
-                                        style: const TextStyle(overflow: TextOverflow.ellipsis),
-                                      ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               );
                             },
