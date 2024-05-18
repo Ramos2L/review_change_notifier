@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../controller/list_controller.dart';
@@ -12,7 +14,9 @@ abstract class ListViewMixin extends State<ListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.loadNames();
+    scheduleMicrotask(() async {
+      await controller.loadNames();
+    });
   }
 
   @override

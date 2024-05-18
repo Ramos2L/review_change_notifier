@@ -6,18 +6,18 @@ class ListController extends ChangeNotifier {
 
   List<String> get names => _names;
 
-  void incrementNames(String name) {
+  void incrementNames(String name) async {
       names.add(name);
-      _saveNames();
+      await _saveNames();
       notifyListeners();
   }
 
-  void _saveNames() async {
+  Future<void> _saveNames() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('names', names);
   }
 
-  void loadNames() async {
+  Future<void> loadNames() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     names.addAll(prefs.getStringList('names') ?? []);
   }
